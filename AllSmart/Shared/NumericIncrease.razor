@@ -1,0 +1,67 @@
+﻿@using MudBlazor
+@using Models
+
+<div style="text-align:center; width: 100%; color:@ApplicationColors.PrimaryColor; margin-bottom: 0.5rem">@Title</div>
+<div class="d-flex flex-wrap justify-content-center align-items-center">
+<MudIconButton
+        DisableElevation=true
+        Color="Color.Primary"
+        Icon="@Icons.Material.Filled.Remove" 
+        Style=@($"background-color:{Color.Primary}; border-radius: 50%")
+        OnClick="DecreaseValue"
+        Size=Size.Large
+        Variant="Variant.Filled"></MudIconButton>
+    <span class="mx-5" style="color: @ApplicationColors.PrimaryColor; width:5rem; font-size:large; text-align: center">@(Value)@MeasureType()</span>
+    <MudIconButton Color="Color.Primary"
+        DisableElevation=true
+        Icon="@Icons.Material.Filled.Add"
+        OnClick="IncreaseValue"
+        Style=@($"background-color:{Color.Primary}; border-radius: 50%")
+        Size=Size.Large
+        Variant="Variant.Filled"></MudIconButton>
+</div>
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public int Value { get; set; }
+
+    [Parameter]
+    public bool Seconds { get; set; }
+
+    [Parameter]
+    public bool Minutes { get; set; }
+
+    [Parameter]
+    public bool Hours { get; set; }
+
+    [Parameter]
+    public EventCallback<int> ValueChanged { get; set; }
+
+    private void IncreaseValue(MouseEventArgs args)
+    {
+        if (Value >= 0)
+        {
+            Value++;
+            ValueChanged.InvokeAsync(Value);
+        }
+    }
+
+    private void DecreaseValue()
+    {
+        if (Value > 0)
+            Value--;
+        ValueChanged.InvokeAsync(Value);
+
+    }
+
+    private string MeasureType()
+    {
+        if (Seconds) return "s";
+        if (Minutes) return "min";
+        if (Hours) return "h";
+        return string.Empty;
+    }
+
+}

@@ -31,18 +31,58 @@
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
     </PropertyGroup>
 
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-android|AnyCPU'">
+      <AndroidPackageFormat>apk</AndroidPackageFormat>
+      <ApplicationId>com.secalhar.sabida</ApplicationId>
+      <ApplicationTitle>Sabida</ApplicationTitle>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android|AnyCPU'">
+      <ApplicationId>com.secalhar.sabida</ApplicationId>
+      <ApplicationTitle>Sabida</ApplicationTitle>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-ios|AnyCPU'">
+      <ApplicationId>com.secalhar.sabida</ApplicationId>
+      <ApplicationTitle>Sabida</ApplicationTitle>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-maccatalyst|AnyCPU'">
+      <ApplicationId>com.secalhar.sabida</ApplicationId>
+      <ApplicationTitle>Sabida</ApplicationTitle>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-windows10.0.19041.0|AnyCPU'">
+      <ApplicationId>com.secalhar.sabida</ApplicationId>
+      <ApplicationTitle>Sabida</ApplicationTitle>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-ios|AnyCPU'">
+      <ApplicationId>com.secalhar.sabida</ApplicationId>
+      <ApplicationTitle>Sabida</ApplicationTitle>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-maccatalyst|AnyCPU'">
+      <ApplicationId>com.secalhar.sabida</ApplicationId>
+      <ApplicationTitle>Sabida</ApplicationTitle>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-windows10.0.19041.0|AnyCPU'">
+      <ApplicationId>com.secalhar.sabida</ApplicationId>
+      <ApplicationTitle>Sabida</ApplicationTitle>
+    </PropertyGroup>
+
     <ItemGroup>
         <!-- App Icon -->
-        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\appiconfg.svg" Color="#512BD4" />
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" Color="#ffffff" />
 
         <!-- Splash Screen -->
-        <MauiSplashScreen Include="Resources\Splash\splash.svg" Color="#512BD4" BaseSize="128,128" />
-
+		<MauiSplashScreen Include="Resources\Splash\logosplash.svg" BaseSize="256,256" Color="#ffffff"></MauiSplashScreen>
         <!-- Images -->
         <MauiImage Include="Resources\Images\*" />
         <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
 
-        <!-- Custom Fonts -->
+        <!-- Custom Fonts -->       
         <MauiFont Include="Resources\Fonts\*" />
 
         <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
@@ -50,11 +90,24 @@
     </ItemGroup>
 
     <ItemGroup>
+      <None Remove="Resources\Images\logotipo.png" />
+      <None Remove="Resources\Images\logotipo.svg" />
+      <None Remove="Resources\Images\sabida.svg" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.0" />
         <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+        <PackageReference Include="MudBlazor" Version="6.3.1" />
+        <PackageReference Include="Refit" Version="7.0.0-beta.1" />
+        <PackageReference Include="Refit.HttpClientFactory" Version="7.0.0-beta.1" />
+        <PackageReference Include="Refit.Newtonsoft.Json" Version="7.0.0-beta.1" />
     </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Data\" />
     </ItemGroup>
 
-</Project>
+    <ItemGroup>
+      <MauiImage Include="Resources\Splash\sabida.svg" />
+    </ItemGroup></Project>

@@ -1,7 +1,19 @@
 ﻿@page "/"
+@using AllSmart.Models;
+@using MudBlazor
+@inherits ContentPageBase
 
-<h1>Hello, world!</h1>
+<Spinner Color="0043A8" IsLoading=IsBusy></Spinner>
+<img src="~/images/dotnet_bot.svg"
+          Width="182" Height="59" />
 
-Welcome to your new app.
+<MudText Class="px-4 my-5 pb-3" Style="color: #0043A8; font-size:large; font-family: 'Lexend-Regular', Helvetica, Arial, sans-serif !important;">Devices</MudText>
+<DevicesCard Title="Watering"
+             IconLeft="@Icons.Material.Outlined.LocalFlorist"
+             IconRight="@Icons.Material.Filled.Brightness1"
+             Size="Size.Large"
+             Color="0043A8"
+             DeviceMeasure="@DeviceMeter.OnOff"
+             DeviceData="SensorData"
+             OnClickNavigation="/watering"></DevicesCard>
 
-<SurveyPrompt Title="How is Blazor working for you?"/>

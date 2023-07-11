@@ -1,0 +1,101 @@
+﻿@using AllSmart.Models;
+@using MudBlazor
+@inject NavigationManager NavigationManager
+
+<div class="container" @onclick=OnNavigationPage>
+    <div class="col-6 d-flex align-items-center justify-content-between gap-2 py-5 px-3" style="min-height: 100px; border-radius: 1.8rem; background-color:#E6EBF3">
+        <MudIcon 
+            Icon="@IconLeft"
+            Style="@("color:#" + Color)"
+            Size="@Size"
+        ></MudIcon>
+        <MudText Style="@("color:#" + Color + "; font-family: 'Lexend-Regular', Helvetica, Arial, sans-serif !important;")" Class="text-start w-100">@Title</MudText>
+        <MudIcon 
+            Class="@(IconRight.Length > 0 ? "" : "d-none")"
+            Style="@("color:"+StateColor())"
+            Size="Size.Small"
+            Icon="@IconRight"
+        ></MudIcon>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public bool Filled { get; set; }
+
+    [Parameter]
+    public string Color { get; set; }
+
+    [Parameter]
+    public string IconLeft { get; set; }
+
+    [Parameter]
+    public string IconRight { get; set; } = string.Empty;
+
+    [Parameter]
+    public Size Size { get; set; }
+
+    [Parameter]
+    public int DeviceData { get; set; }
+
+    [Parameter]
+    public DeviceMeter DeviceMeasure { get; set; }
+
+    [Parameter]
+    public string OnClickNavigation { get; set; }
+
+    string StateColor()
+    {
+        switch (DeviceMeasure)
+        {
+            case DeviceMeter.Percentual:
+                if (DeviceData > 0 && DeviceData <= 33)
+                {
+                    return "red";
+                }
+                if (DeviceData > 33 && DeviceData <= 66)
+                {
+                    return "yellow";
+                }
+                if (DeviceData > 66)
+                {
+                    return "lightgreen";
+                }
+                break;
+
+            case DeviceMeter.Level:
+                if (DeviceData == 1)
+                {
+                    return "red";
+                }
+                if (DeviceData == 2)
+                {
+                    return "yellow";
+                }
+                if (DeviceData == 3)
+                {
+                    return "lightgreen";
+                }
+                break;
+            case DeviceMeter.OnOff:
+                if (DeviceData == 0)
+                {
+                    return "red";
+                }
+                if (DeviceData == 1)
+                {
+                    return "lightgreen";
+                }
+                break;
+        }
+        return string.Empty;
+    }
+
+    private void OnNavigationPage()
+    {
+        NavigationManager.NavigateTo(OnClickNavigation);
+    }
+}

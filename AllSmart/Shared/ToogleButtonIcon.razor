@@ -1,0 +1,61 @@
+﻿@using AllSmart.Models;
+@using MudBlazor
+
+@{
+    var mainColor = Value ? ApplicationColors.SecondaryColor : ApplicationColors.PrimaryColor;
+    var backgroundColor = Value ? ApplicationColors.PrimaryColor : "white";
+    var border = Value ? "unset" : "solid " + ApplicationColors.PrimaryColor;
+}
+<MudToggleIconButton
+    Disabled=@Disable
+    Toggled=@Value
+    ToggledChanged="@OnToogledChanged"
+    Class="toogleButtonIcon"
+    Size="Size.Medium"
+    Style=@($"background-color:{backgroundColor}; border: {border}; color: {mainColor}")
+    Icon="@Icon"  
+    ToggledIcon="@ToogledIcon"              
+    ToggledSize="Size.Medium"></MudToggleIconButton>
+<div class="text-center w-100" style="color: @ApplicationColors.PrimaryColor">@(Value ? @ToogledTitle : @Title)</div>
+<style>
+    .toogleButtonIcon {
+        margin: 0.25rem;
+        width: 3.5rem;
+        height: 3.5rem;
+        padding: 0.5rem;
+        text-align: center;
+        border-radius: 5rem;
+    }
+</style>
+
+@code {
+
+    [Parameter]
+    public bool Value { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> Clicked { get; set; }
+
+    [Parameter]
+    public string Icon { get; set; }
+
+    [Parameter]
+    public string ToogledIcon { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string ToogledTitle { get; set; }
+
+    [Parameter]
+    public bool Disable { get; set; }
+
+    private void OnToogledChanged()
+    {
+        Value = !Value;
+        if (Clicked.HasDelegate)
+            Clicked.InvokeAsync(Value);
+    }
+
+}

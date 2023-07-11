@@ -1,0 +1,34 @@
+﻿@using AllSmart.Models
+
+<div style="text-align:center; width: 100%; color:#0043A8; margin-bottom: 1rem; font-size:medium;">@Title</div>
+@foreach (var item in DataSource)
+{
+    <ToogleButton Disable=@Disable Item="new KeyValuePair<string, bool>(item.Day, item.IsActive)" Clicked="OnClicked"></ToogleButton>
+}
+
+@code {
+    [Parameter]
+    public List<WeekDay> DataSource { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public EventCallback<List<WeekDay>> DataSourceBack { get; set; }
+
+    [Parameter]
+    public bool Disable { get; set; }
+
+    void OnClicked(WeekDay weekDay)
+    {
+        var itemList = DataSource.FirstOrDefault(x => x.Day == weekDay.Day);
+        if(itemList is not null)
+        {
+            itemList.IsActive = weekDay.IsActive;
+        }
+        if (DataSourceBack.HasDelegate)
+        {
+            DataSourceBack.InvokeAsync(DataSource);
+        }
+    }
+}

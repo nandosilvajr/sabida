@@ -1,0 +1,22 @@
+﻿@using MudBlazor
+@using Models
+@if (IsLoading)
+{
+    <MudOverlay Visible=@IsLoading LightBackground="true">
+        <div style="overflow:visible; height:50px; width:50px; position:fixed; top:50%; left:50%; transform: translate(-25px, -25px); z-index:999">
+            <MudProgressCircular Color=@MudBlazor.Color.Primary Indeterminate="true" Style="@($"color:#{ApplicationColors.PrimaryColor}; width:{Height}px; height:{Height}px")" />
+        </div>
+    </MudOverlay>
+}
+@code {
+    [Parameter]
+    public bool IsLoading { get; set; }
+
+    [Parameter]
+    public string Color { get; set; }
+
+    [Parameter]
+    public int Width { get; set; } = 50;
+    [Parameter]
+    public int Height { get; set; } = 50;
+}

@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AllSmart</name>
+    </assembly>
+    <members>
+        <member name="T:AllSmart.ViewModels.MainPageViewModel">
+            <inheritdoc/>
+        </member>
+        <member name="P:AllSmart.ViewModels.MainPageViewModel.SensorData">
+            <inheritdoc cref="F:AllSmart.ViewModels.MainPageViewModel.sensorData"/>
+        </member>
+        <member name="T:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs">
+            <summary>
+            A helper type providing cached, reusable <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instances
+            for all properties generated with <see cref="T:CommunityToolkit.Mvvm.ComponentModel.ObservablePropertyAttribute"/>.
+            </summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangingArgs.SensorData">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangingEventArgs"/> instance for all "SensorData" generated properties.</summary>
+        </member>
+        <member name="T:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs">
+            <summary>
+            A helper type providing cached, reusable <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instances
+            for all properties generated with <see cref="T:CommunityToolkit.Mvvm.ComponentModel.ObservablePropertyAttribute"/>.
+            </summary>
+        </member>
+        <member name="F:CommunityToolkit.Mvvm.ComponentModel.__Internals.__KnownINotifyPropertyChangedArgs.SensorData">
+            <summary>The cached <see cref="T:System.ComponentModel.PropertyChangedEventArgs"/> instance for all "SensorData" generated properties.</summary>
+        </member>
+        <member name="T:Refit.Implementation.Generated">
+            <inheritdoc />
+        </member>
+        <member name="T:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi">
+            <inheritdoc />
+        </member>
+        <member name="P:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.Client">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.#ctor(System.Net.Http.HttpClient,Refit.IRequestBuilder)">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.GetSensorData">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.GetSensorState">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.ChangePumpState">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.SelectWeekDays(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.GetWeekDays">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.WateringTimeUpdate">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.WateringTime(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.GetWateringTime">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.AllSmart#Services#IWebServiceApi#GetSensorData">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.AllSmart#Services#IWebServiceApi#GetSensorState">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.AllSmart#Services#IWebServiceApi#ChangePumpState">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.AllSmart#Services#IWebServiceApi#SelectWeekDays(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.AllSmart#Services#IWebServiceApi#GetWeekDays">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.AllSmart#Services#IWebServiceApi#WateringTimeUpdate">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.AllSmart#Services#IWebServiceApi#WateringTime(System.String)">
+            <inheritdoc />
+        </member>
+        <member name="M:Refit.Implementation.Generated.AllSmartServicesIWebServiceApi.AllSmart#Services#IWebServiceApi#GetWateringTime">
+            <inheritdoc />
+        </member>
+    </members>
+</doc>

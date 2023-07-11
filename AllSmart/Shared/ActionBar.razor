@@ -1,0 +1,32 @@
+﻿@using MudBlazor
+<div class="container-fluid">
+    <div class="row align-bottom align-text-bottom">
+        <div class="col-1 d-flex align-items-center">
+            <MudIconButton 
+                Size=Size.Small 
+                Style="@($"color:#{Color}; background-color:#{BackgroundColor}")" 
+                Icon="@Icons.Material.Outlined.ChevronLeft" 
+                OnClick="() => NavigationManager.NavigateTo(NavigationFrom)"></MudIconButton>
+        </div>
+        <div class="col-11">
+            <MudText Style="font-family: 'Lexend-Regular', Helvetica, Arial, sans-serif !important; color: #0043A8; font-size:x-large; height:100%; padding-top:10px; padding-bottom:10px; margin-left:20px">@Title</MudText>
+        </div>
+    </div>
+</div>
+@code {
+
+    [Inject]
+    NavigationManager NavigationManager { get; set; }
+
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string Color { get; set; } = "F6C7B8";
+
+    [Parameter]
+    public string BackgroundColor { get; set; } = "0043A8";
+
+    [Parameter]
+    public string NavigationFrom { get; set; } = "/";
+}

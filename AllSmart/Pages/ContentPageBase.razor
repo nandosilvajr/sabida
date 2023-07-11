@@ -1,0 +1,104 @@
+﻿@using AllSmart.Models
+@using Services
+@using MudBlazor
+
+@code {
+    [Inject] 
+    public IWebServiceApi WebServiceApi { get; set; }
+
+    [Inject]
+    public ISnackbar Snackbar { get; set; }
+
+    public bool IsBusy { get; set; }
+
+    public async Task<int> GetSensorData()
+    {
+        IsBusy = true;
+        var response = await WebServiceApi.GetSensorData();
+
+        IsBusy = false;
+        return ConvertSensorData(response ?? 0);
+    }
+
+    public async Task<bool?>GetSensorState()
+    {
+        IsBusy = true;
+        bool? sensorState = null;
+        try
+        {
+
+                var response = await WebServiceApi.GetSensorState();
+                sensorState = response.Equals("0") ? false : true;
+            
+
+            IsBusy = false;
+            
+
+        }
+        catch (Exception e)
+        {
+            IsBusy = false;
+            throw;
+        }
+
+        return sensorState;
+    }
+
+
+    private int ConvertSensorData(int data)
+    {
+        switch (data)
+        {
+            case >= 600:
+                return 3;
+            case < 600 and >= 500:
+                return 2;
+        }
+        return 1;
+    }
+
+    public async Task<int> GetWatetingTimeData()
+    {
+        IsBusy = true;
+        var response = await WebServiceApi.GetWateringTime();
+        if(response is null)
+        {
+            Snackbar.Add("Error try watering data from device.");
+            return 0;
+        }else
+        {
+            return response.Value;
+        }
+    }
+
+    public async Task<List<WeekDay>> GetSelectedWeekDays()
+    {
+        IsBusy = true;
+        var response = await WebServiceApi.GetWeekDays();
+
+        if(response is not null)
+        {
+            var stringList = response.Split("\n").ToList();
+
+            var newWeekDayList = new List<WeekDay>();
+
+            foreach (var item in stringList)
+            {
+                if (!string.IsNullOrEmpty(item))
+                {
+                    
+                newWeekDayList.Add(new WeekDay
+                    {
+                        Day = item.Substring(0, 3),
+                        DayLong = item,
+                        IsActive = true
+                    }); 
+                }
+            }
+
+            return newWeekDayList;
+        }
+        IsBusy = false;
+        return null;
+    }
+}

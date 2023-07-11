@@ -1,0 +1,52 @@
+﻿@using AllSmart.Models;
+@using MudBlazor
+
+@{
+    var mainColor = Item.Value ? ApplicationColors.SecondaryColor : ApplicationColors.PrimaryColor;
+    var backgroundColor = Item.Value ? ApplicationColors.PrimaryColor : "white";
+    var border = Item.Value ? "unset" : "solid " + ApplicationColors.PrimaryColor;
+}
+<button class="toogleButton" style="pointer-events:@_disable; color: @mainColor; background-color: @backgroundColor; border: @border" @onclick="OnChangeValue">
+    @Item.Key
+</button>
+<style>
+    .toogleButton {
+        margin: 0.25rem;
+        width: 6rem;
+        height: 3rem;
+        padding: 0.5rem;
+        text-align: center;
+        border-radius: 5rem;
+    }
+</style>
+
+@code {
+
+    [Parameter]
+    public KeyValuePair<string, bool> Item { get; set; }
+
+    [Parameter]
+    public EventCallback<WeekDay> Clicked { get; set; }
+
+    [Parameter]
+    public bool Disable { get; set; }
+
+    private string _disable => Disable ? "none" : "unset";
+
+    private void OnChangeValue()
+    {
+        var itemValue = Item.Value;
+        var itemKey = Item.Key;
+        Item = new KeyValuePair<string, bool>(itemKey, !itemValue);
+
+        var newItem = new WeekDay
+            {
+                Day = Item.Key,
+                IsActive = Item.Value
+            };
+
+        if (Clicked.HasDelegate)
+            Clicked.InvokeAsync(newItem);
+        StateHasChanged();
+    }
+}

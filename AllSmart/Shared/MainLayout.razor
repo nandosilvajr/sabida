@@ -1,17 +1,32 @@
 ﻿@inherits LayoutComponentBase
+@using MudBlazor
+@using Models
+
+<MudThemeProvider Theme="myTheme"/>
+<MudDialogProvider/>
+<MudSnackbarProvider/>
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu/>
-    </div>
-
     <main>
-        <div class="top-row px-4">
-            <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-        </div>
-
         <article class="content px-4">
             @Body
         </article>
     </main>
 </div>
+
+@code {
+    private MudTheme myTheme = new()
+    {
+        Palette = new Palette
+        {
+            Primary = ApplicationColors.PrimaryColor,
+            Secondary = ApplicationColors.SecondaryColor,
+            PrimaryLighten = ApplicationColors.LightColor,
+            Info = "#001f3f",
+            Success = "#2ECC40",
+            Warning = "#FF851B",
+            Error = "#F012BE",
+            AppbarBackground = "#85144b",
+        },
+    };
+}

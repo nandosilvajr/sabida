@@ -1,0 +1,179 @@
+﻿@page "/watering"
+@using AllSmart.Models
+@using MudBlazor
+@using Newtonsoft.Json
+@inherits ContentPageBase
+
+<ActionBar Title="Watering"></ActionBar>
+<Spinner IsLoading=IsBusy></Spinner>
+
+@if(!WaterLevelSensorOff)
+{
+    <div class="d-flex justify-content-center mt-5">
+        <LevelDisplay Title="Water"></LevelDisplay>
+    </div>
+}
+
+@if (!MoistureSensorOff)
+{   
+    <div class="d-flex justify-content-center">
+        <LevelDisplay Title="Moisture" Value="MoistureSensorData" DeviceMeter="DeviceMeter.Level" ValueVisible=false></LevelDisplay>
+    </div>
+}
+
+<div class="d-flex flex-wrap justify-content-center mt-3">
+    <ButtonList Disable=IsBusy DataSource="WeekDays" Title="Watering days" DataSourceBack="OnDataSourceUpdate"></ButtonList>
+</div>
+
+<div class="d-flex flex-column justify-content-center align-items-center mt-5">
+    <div class="row my-2" style="color: @ApplicationColors.PrimaryColor; font-size:medium; text-align:center">Watering Time</div>
+    <div class="row my-2" style="color: @ApplicationColors.PrimaryColor; font-size:large; text-align:center">@(WateringTime)s</div>
+   <MudSlider
+        T="int"
+        Max=60
+        Step="5"
+        Style="width:50%"
+        Size="Size.Large"
+        Value="@WateringTime"
+        ValueLabel="true"
+        ValueChanged="OnWateringTimeValueChanged">
+
+    </MudSlider>
+</div>
+
+<div class="d-flex flex-wrap justify-content-center mt-5">
+<ToogleButtonIcon
+    Disable=IsBusy
+    Value=@PumpOn
+    Icon="@Icons.Material.Outlined.WaterDrop"
+    ToogledIcon="@Icons.Material.Outlined.WaterDrop"
+    Title="Water"
+    ToogledTitle="Watering"
+    Clicked="OnWateringClicked">
+</ToogleButtonIcon>
+</div>
+
+
+@code {
+    [Parameter]
+    public bool MoistureSensorOff { get; set; } = true;
+
+    [Parameter]
+    public bool WaterLevelSensorOff { get; set; } = true;
+
+    private int MoistureSensorData { get; set; }
+
+    private int WaterLevelSensorData { get; set; }
+
+
+    List<WeekDay> WeekDays { get; set; } = new();
+
+    public bool PumpOn { get; set; }
+
+    public int WateringTime { get; set; }
+
+
+    protected override async Task OnInitializedAsync()
+    {
+        IsBusy = true;
+        try
+        {
+            var moistureSensorState = await GetSensorState();
+
+            if (moistureSensorState.HasValue)
+            {
+                MoistureSensorOff = moistureSensorState.Value;
+            }
+
+            if (!MoistureSensorOff)
+            {
+                MoistureSensorData = await GetSensorData();
+            }
+
+            WeekDays.Clear();
+
+            WeekDays = new List<WeekDay>(WeekDaysData.GetWeekDays());
+
+            var selectedWeekDays = await GetSelectedWeekDays();
+
+            foreach (var item in WeekDays)
+            {
+                if(selectedWeekDays.Any(x => x.Day == item.Day))
+                {
+                    item.IsActive = true;
+                }
+            }
+            // get watering time in milliseconds
+            WateringTime = await GetWatetingTimeData();
+
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            IsBusy = false;
+            throw;
+        }
+        IsBusy = false;
+        StateHasChanged();
+    }
+
+    private async void OnDataSourceUpdate(List<WeekDay> weekDays)
+    {
+        WeekDays = new List<WeekDay>(weekDays);
+
+        var getDaysSelected = WeekDays.Where(x => x.IsActive).Select(x => x.DayLong).ToList();
+
+        try
+        {
+            var json = JsonConvert.SerializeObject(getDaysSelected);
+            IsBusy = true;
+            await WebServiceApi.SelectWeekDays(json);
+            IsBusy = false; 
+        }
+        catch (Exception e)
+        {
+            IsBusy = false;
+            throw;
+        }
+        IsBusy = false;
+        StateHasChanged();
+    }
+
+    async void OnWateringClicked(bool value)
+    {
+        IsBusy = true;
+        try
+        {
+            var response = await WebServiceApi.ChangePumpState();
+            PumpOn = response.Value == 0;
+            IsBusy = false;
+            StateHasChanged();
+        }
+        catch (Exception)
+        {
+            IsBusy = false;
+            throw;
+        }
+        IsBusy = false;
+    }
+
+    async Task OnWateringTimeValueChanged(int value)
+    {
+        // convert time to milliseconds
+        WateringTime = value;
+        IsBusy = true;
+        try
+        {
+            var response = await WebServiceApi.WateringTime(WateringTime.ToString());
+            IsBusy = false;
+        }
+        catch (Exception e)
+        {
+            IsBusy = false;
+            Snackbar.Add("Error to try send Watering time update.", Severity.Error);
+        }
+        IsBusy = false;
+    }
+
+    
+}

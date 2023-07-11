@@ -57,6 +57,50 @@
       "PackagePath": "staticwebassets\\favicon.ico"
     },
     {
+      "Id": "C:\\Users\\Fernando\\RiderProjects\\AllSmart\\AllSmart\\wwwroot\\fonts\\Lexend-Black.ttf",
+      "PackagePath": "staticwebassets\\fonts\\Lexend-Black.ttf"
+    },
+    {
+      "Id": "C:\\Users\\Fernando\\RiderProjects\\AllSmart\\AllSmart\\wwwroot\\fonts\\Lexend-Bold.ttf",
+      "PackagePath": "staticwebassets\\fonts\\Lexend-Bold.ttf"
+    },
+    {
+      "Id": "C:\\Users\\Fernando\\RiderProjects\\AllSmart\\AllSmart\\wwwroot\\fonts\\Lexend-ExtraBold.ttf",
+      "PackagePath": "staticwebassets\\fonts\\Lexend-ExtraBold.ttf"
+    },
+    {
+      "Id": "C:\\Users\\Fernando\\RiderProjects\\AllSmart\\AllSmart\\wwwroot\\fonts\\Lexend-ExtraLight.ttf",
+      "PackagePath": "staticwebassets\\fonts\\Lexend-ExtraLight.ttf"
+    },
+    {
+      "Id": "C:\\Users\\Fernando\\RiderProjects\\AllSmart\\AllSmart\\wwwroot\\fonts\\Lexend-Light.ttf",
+      "PackagePath": "staticwebassets\\fonts\\Lexend-Light.ttf"
+    },
+    {
+      "Id": "C:\\Users\\Fernando\\RiderProjects\\AllSmart\\AllSmart\\wwwroot\\fonts\\Lexend-Medium.ttf",
+      "PackagePath": "staticwebassets\\fonts\\Lexend-Medium.ttf"
+    },
+    {
+      "Id": "C:\\Users\\Fernando\\RiderProjects\\AllSmart\\AllSmart\\wwwroot\\fonts\\Lexend-Regular.ttf",
+      "PackagePath": "staticwebassets\\fonts\\Lexend-Regular.ttf"
+    },
+    {
+      "Id": "C:\\Users\\Fernando\\RiderProjects\\AllSmart\\AllSmart\\wwwroot\\fonts\\Lexend-SemiBold.ttf",
+      "PackagePath": "staticwebassets\\fonts\\Lexend-SemiBold.ttf"
+    },
+    {
+      "Id": "C:\\Users\\Fernando\\RiderProjects\\AllSmart\\AllSmart\\wwwroot\\fonts\\Lexend-Thin.ttf",
+      "PackagePath": "staticwebassets\\fonts\\Lexend-Thin.ttf"
+    },
+    {
+      "Id": "C:\\Users\\Fernando\\RiderProjects\\AllSmart\\AllSmart\\wwwroot\\images\\logo.png",
+      "PackagePath": "staticwebassets\\images\\logo.png"
+    },
+    {
+      "Id": "C:\\Users\\Fernando\\RiderProjects\\AllSmart\\AllSmart\\wwwroot\\images\\logotipo.png",
+      "PackagePath": "staticwebassets\\images\\logotipo.png"
+    },
+    {
       "Id": "C:\\Users\\Fernando\\RiderProjects\\AllSmart\\AllSmart\\wwwroot\\index.html",
       "PackagePath": "staticwebassets\\index.html"
     },

@@ -1,0 +1,90 @@
+﻿@using AllSmart.Models;
+@using static AllSmart.Shared.DevicesCard;
+
+<div style="padding-top: 1.5rem; position: relative; width: 15rem; margin-top: 1rem; margin-bottom: 1rem">
+    <div style="position: absolute; top: 0; text-align:center; width: 100%; color:#0043A8">@Title</div>
+    <div style="background-color:#E6EBF3; width:15rem; height:3rem; border-radius: 3rem">
+        <div style="padding-left:1rem; padding-right:1rem; background-color:@StateColor(); color:@Color; width:@ConvertValue()%; height:3rem; border-radius: 3rem; display:flex; justify-content:center; align-items:center">
+            @if(ValueVisible)
+            {
+                @ConvertValue()
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+
+    [Parameter]
+    public string Color { get; set; } = "#0043A8";
+
+    [Parameter]
+    public string BackgroundColor { get; set; } = "#0043A8";
+
+    [Parameter]
+    public int Value { get; set; } = 100;
+
+    [Parameter]
+    public DeviceMeter DeviceMeter { get; set; }
+
+    [Parameter]
+    public bool ValueVisible { get; set; } = true;
+
+    private int ConvertValue()
+    {
+        if (DeviceMeter == DeviceMeter.Level)
+            return (33 * Value) + 1;
+        else
+            return Value;
+    }
+
+    string StateColor()
+    {
+        switch (DeviceMeter)
+        {
+            case DeviceMeter.Percentual:
+                if (Value > 0 && Value <= 33)
+                {
+                    return "indianred";
+                }
+                if (Value > 33 && Value <= 66)
+                {
+                    return "gold";
+                }
+                if (Value > 66)
+                {
+                    return "lightgreen";
+                }
+                break;
+
+            case DeviceMeter.Level:
+                if (Value == 1)
+                {
+                    return "indianred";
+                }
+                if (Value == 2)
+                {
+                    return "gold";
+                }
+                if (Value == 3)
+                {
+                    return "lightgreen";
+                }
+                break;
+            case DeviceMeter.OnOff:
+                if (Value == 0)
+                {
+                    return "indianred";
+                }
+                if (Value == 1)
+                {
+                    return "lightgreen";
+                }
+                break;
+        }
+        return string.Empty;
+    }
+
+}

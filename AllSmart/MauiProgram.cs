@@ -1,5 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
-using AllSmart.Data;
+﻿using AllSmart.Services;
+using Microsoft.Extensions.Logging;
+using MudBlazor.Services;
+using Refit;
 
 namespace AllSmart;
 
@@ -13,6 +15,12 @@ public static class MauiProgram
             .ConfigureFonts(fonts => { fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular"); });
 
         builder.Services.AddMauiBlazorWebView();
+
+        builder.Services
+            .AddRefitClient<IWebServiceApi>()
+            .ConfigureHttpClient(c => c.BaseAddress = new Uri("http://webserver"));
+
+        builder.Services.AddMudServices();
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();
