@@ -27,12 +27,12 @@
         try
         {
 
-                var response = await WebServiceApi.GetSensorState();
-                sensorState = response.Equals("0") ? false : true;
-            
+            var response = await WebServiceApi.GetSensorState();
+            sensorState = response.Equals("0") ? false : true;
+
 
             IsBusy = false;
-            
+
 
         }
         catch (Exception e)
@@ -61,22 +61,54 @@
     {
         IsBusy = true;
         var response = await WebServiceApi.GetWateringTime();
-        if(response is null)
+        if(string.IsNullOrEmpty(response))
         {
-            Snackbar.Add("Error try watering data from device.");
             return 0;
         }else
         {
-            return response.Value;
+            IsBusy = false;
+            return Convert.ToInt32(response);
         }
+    }
+
+    public async Task<List<DateTime>> GetLastWatering()
+    {
+        IsBusy = true;
+        var response = await WebServiceApi.GetLastWatering();
+
+        if (!string.IsNullOrEmpty(response))
+        {
+            var stringList = response.Split("\n").ToList();
+
+            var newWeekDayList = new List<DateTime>();
+
+            foreach (var item in stringList)
+            {
+                if (!string.IsNullOrEmpty(item))
+                {
+
+                    newWeekDayList.Add(DateTime.Parse(item));
+                }
+            }
+            IsBusy = false;
+            return newWeekDayList;
+        } else
+        {
+            Snackbar.Add("Error try watering data from device.");
+            IsBusy = false;
+            return null;
+        }
+        IsBusy = false;
+        return null;
     }
 
     public async Task<List<WeekDay>> GetSelectedWeekDays()
     {
         IsBusy = true;
+
         var response = await WebServiceApi.GetWeekDays();
 
-        if(response is not null)
+        if (!string.IsNullOrEmpty(response))
         {
             var stringList = response.Split("\n").ToList();
 
@@ -86,8 +118,8 @@
             {
                 if (!string.IsNullOrEmpty(item))
                 {
-                    
-                newWeekDayList.Add(new WeekDay
+
+                    newWeekDayList.Add(new WeekDay
                     {
                         Day = item.Substring(0, 3),
                         DayLong = item,
@@ -95,7 +127,7 @@
                     }); 
                 }
             }
-
+            IsBusy = false;
             return newWeekDayList;
         }
         IsBusy = false;

@@ -27,5 +27,8 @@ public interface IWebServiceApi
     Task<int?> WateringTime([Body]string value);
 
     [Get("/$getWateringTime")]
-    Task<int?> GetWateringTime();
+    Task<string> GetWateringTime();
+
+    [Get("/$getLastWatering")]
+    Task<string> GetLastWatering();
 }

@@ -22,7 +22,7 @@
 }
 
 <div class="d-flex flex-wrap justify-content-center mt-3">
-    <ButtonList Disable=IsBusy DataSource="WeekDays" Title="Watering days" DataSourceBack="OnDataSourceUpdate"></ButtonList>
+    <ButtonList Disable=IsBusy DataSource="WeekDays" Title="Watering Days" DataSourceBack="OnDataSourceUpdate"></ButtonList>
 </div>
 
 <div class="d-flex flex-column justify-content-center align-items-center mt-5">
@@ -39,6 +39,11 @@
         ValueChanged="OnWateringTimeValueChanged">
 
     </MudSlider>
+</div>
+
+<div class="d-flex flex-column justify-content-center align-items-center mt-5">
+    <div class="row my-2" style="color: @ApplicationColors.PrimaryColor; font-size:medium; text-align:center">Last Watering</div>
+    <div class="row my-2" style="color: @ApplicationColors.PrimaryColor; font-size:large; text-align:center">@(LastWateringDateTime.ToString("d")) @(LastWateringDateTime.ToString("t")) (@((DateTime.Today - LastWateringDateTime.Date).TotalDays + " days ago")) </div>
 </div>
 
 <div class="d-flex flex-wrap justify-content-center mt-5">
@@ -65,17 +70,25 @@
 
     private int WaterLevelSensorData { get; set; }
 
-
     List<WeekDay> WeekDays { get; set; } = new();
+
+    List<DateTime> LastWatering { get; set; } = new();
 
     public bool PumpOn { get; set; }
 
     public int WateringTime { get; set; }
 
+    private DateTime LastWateringDateTime => LastWatering.LastOrDefault();
 
     protected override async Task OnInitializedAsync()
     {
         IsBusy = true;
+        LoadData();
+        IsBusy = false;
+    }
+
+    private async void LoadData()
+    {
         try
         {
             var moistureSensorState = await GetSensorState();
@@ -95,16 +108,21 @@
             WeekDays = new List<WeekDay>(WeekDaysData.GetWeekDays());
 
             var selectedWeekDays = await GetSelectedWeekDays();
-
-            foreach (var item in WeekDays)
+            if (selectedWeekDays?.Any() is true)
             {
-                if(selectedWeekDays.Any(x => x.Day == item.Day))
+                foreach (var item in WeekDays)
                 {
-                    item.IsActive = true;
+                    if (selectedWeekDays.Any(x => x.Day == item.Day))
+                    {
+                        item.IsActive = true;
+                    }
                 }
             }
             // get watering time in milliseconds
             WateringTime = await GetWatetingTimeData();
+
+            LastWatering = await GetLastWatering();
+
 
         }
         catch (Exception e)
@@ -113,10 +131,9 @@
             IsBusy = false;
             throw;
         }
-        IsBusy = false;
+
         StateHasChanged();
     }
-
     private async void OnDataSourceUpdate(List<WeekDay> weekDays)
     {
         WeekDays = new List<WeekDay>(weekDays);
@@ -128,11 +145,13 @@
             var json = JsonConvert.SerializeObject(getDaysSelected);
             IsBusy = true;
             await WebServiceApi.SelectWeekDays(json);
-            IsBusy = false; 
+            IsBusy = false;
+            StateHasChanged();
         }
         catch (Exception e)
         {
             IsBusy = false;
+            StateHasChanged();
             throw;
         }
         IsBusy = false;
@@ -146,6 +165,7 @@
         {
             var response = await WebServiceApi.ChangePumpState();
             PumpOn = response.Value == 0;
+            LoadData();
             IsBusy = false;
             StateHasChanged();
         }
