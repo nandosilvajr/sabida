@@ -1,1 +1,0 @@
-C:\Users\Fernando\RiderProjects\AllSmart\AllSmart\AllSmart.csproj;x64
