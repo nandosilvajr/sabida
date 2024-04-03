@@ -4,10 +4,11 @@
 @inherits ContentPageBase
 
 <Spinner Color="0043A8" IsLoading=IsBusy></Spinner>
-<img src="../images/logotipo.png"
-          Width="182" Height="59" />
+<div>
+    <img src="../images/logotipo.svg" style="height: 4rem; padding: 0 ; position: relative; top: 1rem; margin-bottom: 1rem" alt=""/>
+</div>
 
-<MudText Class="px-4 my-5 pb-3" Style="color: #0043A8; font-size:large; font-family: 'Lexend-Regular', Helvetica, Arial, sans-serif !important;">Devices</MudText>
+<MudText Class="px-3 my-5 pb-3" Style="color: #0043A8; font-size:large; font-family: 'Lexend-Regular', Helvetica, Arial, sans-serif !important;">Devices</MudText>
 <DevicesCard Title="Watering"
              IconLeft="@Icons.Material.Outlined.LocalFlorist"
              IconRight="@Icons.Material.Filled.Brightness1"

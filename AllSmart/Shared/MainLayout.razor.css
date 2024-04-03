@@ -2,10 +2,16 @@
     position: relative;
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 main {
     flex: 1;
+}
+
+article{
+    width: 100% !important;
+    padding: 0 !important;
 }
 
 .sidebar {
@@ -69,7 +75,7 @@ main {
     }
 
     .top-row, article {
-        padding-left: 2rem !important;
-        padding-right: 1.5rem !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
     }
 }

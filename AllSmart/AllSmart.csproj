@@ -91,12 +91,14 @@
 
     <ItemGroup>
       <Content Remove="wwwroot\images\logo.png" />
+      <Content Remove="AllSmart.Arduino\**" />
     </ItemGroup>
 
     <ItemGroup>
       <None Remove="Resources\Images\logotipo.png" />
       <None Remove="Resources\Images\logotipo.svg" />
       <None Remove="Resources\Images\sabida.svg" />
+      <None Remove="AllSmart.Arduino\**" />
     </ItemGroup>
 
     <ItemGroup>
@@ -115,4 +117,20 @@
     <ItemGroup>
       <MauiImage Include="Resources\Splash\sabida.svg" />
       <MauiImage Include="wwwroot\images\logo.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Remove="AllSmart.Arduino\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="AllSmart.Arduino\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiXaml Remove="AllSmart.Arduino\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <AndroidAarLibrary Remove="AllSmart.Arduino\**" />
     </ItemGroup></Project>
