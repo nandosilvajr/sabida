@@ -43,7 +43,7 @@ int mostureSensor = 0;
 
 bool ledOn = true;
 
-bool pumpOff = true;
+bool pumpOn = false;
 
 bool sensorOff = true;
 
@@ -62,12 +62,6 @@ const int day = 3600 * second * 24;
 int wateringTime = 10;
 
 const int checkTime = day;
-
-//const char* weekDays[] = {"Sunday", "Monday", "Tuesday","Wednesday", "Thursday", "Friday", "Saturday"};
-
-// Global variables:-
-
-//char* selectedWeekDays[7] = {};
 
 vector<String> weekDays = {"Sunday", "Monday", "Tuesday","Wednesday", "Thursday", "Friday", "Saturday"};
 
@@ -215,15 +209,16 @@ void handleSysInfo() {
   FSInfo fs_info;
   LittleFS.info(fs_info);
 
-  result += "{\n";
-  result += "  \"flashSize\": " + String(ESP.getFlashChipSize()) + ",\n";
-  result += "  \"freeHeap\": " + String(ESP.getFreeHeap()) + ",\n";
-  result += "  \"fsTotalBytes\": " + String(fs_info.totalBytes) + ",\n";
-  result += "  \"fsUsedBytes\": " + String(fs_info.usedBytes) + ",\n";
+  result += "{";
+  result += "  \"flashSize\": " + String(ESP.getFlashChipSize()) + ",";
+  result += "  \"freeHeap\": " + String(ESP.getFreeHeap()) + ",";
+  result += "  \"fsTotalBytes\": " + String(fs_info.totalBytes) + ",";
+  result += "  \"fsUsedBytes\": " + String(fs_info.usedBytes);
   result += "}";
 
+
   server.sendHeader("Cache-Control", "no-cache");
-  server.send(200, "text/javascript; charset=utf-8", result);
+  server.send(200, "json/javascript; charset=utf-8", result);
 }  // handleSysInfo()
 
 
@@ -273,15 +268,30 @@ void readMostureSensor() {
   server.send(200, "text/javascript; charset=utf-8", result);
 }
 
-void pumpStateCommand() {
-  
-  pumpOff = !pumpOff;
-  if(!pumpOff){
-    appendFile("/lastwatering.txt", GetDateTimeApi().c_str()); 
-  }
+
+void pumpStatusInfo() {
+  String result;
+
+  result += String(pumpOn);
 
   server.sendHeader("Cache-Control", "no-cache");
-  server.send(200, "text/javascript; charset=utf-8", String(pumpOff));
+  server.send(200, "text/javascript; charset=utf-8", result);
+} 
+
+void saveLastWatering(bool pump){
+  if(pumpOn){
+    appendFile("/lastwatering.txt", GetDateTimeApi().c_str()); 
+  }
+}
+
+void pumpStateCommand() {
+  
+  pumpOn = !pumpOn;
+
+  saveLastWatering(pumpOn);
+
+  server.sendHeader("Cache-Control", "no-cache");
+  server.send(200, "text/javascript; charset=utf-8", String(pumpOn));
 }
 
 void selectDaysCommand() {
@@ -656,15 +666,17 @@ void RegistRoutes() {
   // register some REST services
   server.on("/$list", HTTP_GET, handleListFiles);
 
-  server.on("/$sysinfo", HTTP_GET, handleSysInfo);
+  server.on("/$sysInfo", HTTP_GET, handleSysInfo);
 
-  server.on("/$ledstatus", HTTP_GET, ledStatusInfo);
+  server.on("/$ledStatus", HTTP_GET, ledStatusInfo);
 
   server.on("/$ledState", HTTP_POST, ledStateCommand);
 
   server.on("/$readSensor", HTTP_GET, readMostureSensor);
 
   server.on("/$pumpCommand", HTTP_POST, pumpStateCommand);
+
+  server.on("/$pumpStatusInfo", HTTP_GET, pumpStatusInfo);
 
   server.on("/$selectDays", selectDaysCommand);
 
@@ -687,7 +699,7 @@ void RegistRoutes() {
 // Setup everything to make the webserver work.
 void setup(void) {
   
-  Serial.begin(115200);
+  Serial.begin(921600);
   
   delay(3000);  // wait for serial monitor to start completely.
 
@@ -781,33 +793,7 @@ void loop(void) {
   
   server.handleClient();
 
-  digitalWrite(D8 , pumpOff ? 0 : 1);
-
-  if(displayDataSensorTimer.repeat()){
-    
-    moistVal = analogRead(A0);
-    
-    Serial.println(moistVal);
-    
-    int percent = 2.718282 * 2.718282 * (.008985 * moistVal + 0.207762); //calculate percent for probes about 1 - 1.5 inches apart
-    
-    Serial.print(percent);
-    
-    Serial.println("% Moisture ");
-
-    
-    if(moistVal < 220 && sensorOff == false)
-    {       
-      digitalWrite(D8, HIGH);
-      delay(wateringTime * 1000);
-      digitalWrite(D8, LOW);
-    } 
-    else
-    {
-      digitalWrite(D8, LOW);
-    }
-  }
-
+  digitalWrite(D8 , pumpOn ? 1 : 0);
 
   if(weekDayCheck.repeat()) {
     String ret = DateTimeApi();
@@ -815,6 +801,7 @@ void loop(void) {
     for(int i = 0; i < 7; i++) {
       if(checkWeekDay(ret)){
         digitalWrite(D8, HIGH);
+        saveLastWatering(true);
         delay(wateringTime * 1000);
         digitalWrite(D8, LOW);
         break;
