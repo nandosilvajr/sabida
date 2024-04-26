@@ -2,7 +2,7 @@
 @using MudBlazor
 @inject NavigationManager NavigationManager
 
-<div role="button" class="container" @onclick=OnNavigationPage>
+<div role="button" class="container @(IsDisabled ? "opacity-50" : "")" style="@(IsDisabled ? "pointer-events: none" : "")" @onclick=OnNavigationPage>
     <div class="col-6 d-flex align-items-center justify-content-between gap-2 py-5 px-3" style="min-height: 100px; border-radius: 1.8rem; background-color:#E6EBF3">
         <MudIcon 
             Icon="@IconLeft"
@@ -12,7 +12,7 @@
         <MudText Style="@("color:#" + Color + "; font-family: 'Lexend-Regular', Helvetica, Arial, sans-serif !important;")" Class="text-start w-100">@Title</MudText>
         <MudIcon 
             Class="@(IconRight.Length > 0 ? "" : "d-none")"
-            Style="@("color:"+StateColor())"
+            Style="@($"color:{StateColor()}")"
             Size="Size.Small"
             Icon="@IconRight"
         ></MudIcon>
@@ -46,6 +46,9 @@
 
     [Parameter]
     public string OnClickNavigation { get; set; }
+    
+    [Parameter]
+    public bool IsDisabled { get; set; }
 
     string StateColor()
     {

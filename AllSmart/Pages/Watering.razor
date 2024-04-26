@@ -91,17 +91,6 @@
     {
         try
         {
-            var moistureSensorState = await GetSensorState();
-
-            if (moistureSensorState.HasValue)
-            {
-                MoistureSensorOff = moistureSensorState.Value;
-            }
-
-            if (!MoistureSensorOff)
-            {
-                MoistureSensorData = await GetSensorData();
-            }
 
             WeekDays.Clear();
 

@@ -1,6 +1,9 @@
 ﻿@using AllSmart.Models
 @using Services
 @using MudBlazor
+@using System.Diagnostics
+@using System.Net
+@using Refit
 
 @code {
     [Inject] 
@@ -11,7 +14,7 @@
 
     public bool IsBusy { get; set; }
 
-    public async Task<int> GetSensorData()
+    protected async Task<int> GetSensorData()
     {
         IsBusy = true;
         var response = await WebServiceApi.GetSensorData();
@@ -20,28 +23,27 @@
         return ConvertSensorData(response ?? 0);
     }
 
-    public async Task<bool?>GetSensorState()
+    protected async Task<bool?>GetDeviceState()
     {
         IsBusy = true;
-        bool? sensorState = null;
+
         try
         {
-
-            var response = await WebServiceApi.GetSensorState();
-            sensorState = response.Equals("0") ? false : true;
-
-
+            var response = await WebServiceApi.GetSysInfo();
             IsBusy = false;
-
-
+            return response is not null;
         }
-        catch (Exception e)
+        catch (OperationCanceledException e)
         {
             IsBusy = false;
-            throw;
-        }
 
-        return sensorState;
+            Snackbar.Add("Error to try access the device.");
+            return false;
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
 
@@ -57,7 +59,7 @@
         return 1;
     }
 
-    public async Task<int> GetWatetingTimeData()
+    protected async Task<int> GetWatetingTimeData()
     {
         IsBusy = true;
         var response = await WebServiceApi.GetWateringTime();
@@ -71,7 +73,7 @@
         }
     }
 
-    public async Task<List<DateTime>> GetLastWatering()
+    protected async Task<List<DateTime>> GetLastWatering()
     {
         IsBusy = true;
         var response = await WebServiceApi.GetLastWatering();
@@ -94,15 +96,13 @@
             return newWeekDayList;
         } else
         {
-            Snackbar.Add("Error try watering data from device.");
+            Snackbar.Add("Error to try get data of watering device.");
             IsBusy = false;
             return null;
         }
-        IsBusy = false;
-        return null;
     }
 
-    public async Task<List<WeekDay>> GetSelectedWeekDays()
+    protected async Task<List<WeekDay>> GetSelectedWeekDays()
     {
         IsBusy = true;
 

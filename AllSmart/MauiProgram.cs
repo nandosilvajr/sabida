@@ -18,7 +18,12 @@ public static class MauiProgram
 
         builder.Services
             .AddRefitClient<IWebServiceApi>()
-            .ConfigureHttpClient(c => c.BaseAddress = new Uri("http://webserver"));
+            .ConfigureHttpClient(
+                c => c.BaseAddress = new Uri("http://webserver")
+                )
+            .ConfigureHttpClient(
+                c => c.Timeout = TimeSpan.FromSeconds(10)
+            );
 
         builder.Services.AddMudServices();
 

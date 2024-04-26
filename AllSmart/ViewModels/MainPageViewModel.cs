@@ -6,21 +6,14 @@ using Microsoft.AspNetCore.Components;
 
 namespace AllSmart.ViewModels;
 
-public partial class MainPageViewModel : ObservableObject
+public partial class MainPageViewModel : BaseViewModel
 {
 
-    public ICommand RefreshCommand { get; }
 
-    [ObservableProperty] private int sensorData;
+    [ObservableProperty] private int _sensorData;
 
     [Inject] private IWebServiceApi WebServiceApi { get; set; }
     public MainPageViewModel()
     {
-        RefreshCommand = new RelayCommand(RefreshPage);
-    }
-
-    private static void RefreshPage()
-    {
-        throw new NotImplementedException();
     }
 }

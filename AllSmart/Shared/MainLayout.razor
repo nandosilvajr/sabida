@@ -2,7 +2,7 @@
 @using MudBlazor
 @using Models
 
-<MudThemeProvider Theme="myTheme"/>
+<MudThemeProvider Theme="_myTheme"/>
 <MudDialogProvider/>
 <MudSnackbarProvider/>
 
@@ -15,7 +15,7 @@
 </div>
 
 @code {
-    private MudTheme myTheme = new()
+    private readonly MudTheme _myTheme = new()
     {
         Palette = new Palette
         {

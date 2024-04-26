@@ -6,11 +6,13 @@
              x:Class="AllSmart.MainPage"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
 
-
+<RefreshView IsRefreshing="{Binding IsRefreshing}"
+             Command="{Binding RefreshCommand}">
         <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
             <BlazorWebView.RootComponents>
                 <RootComponent Selector="#app" ComponentType="{x:Type local:Main}" />
             </BlazorWebView.RootComponents>
         </BlazorWebView>
+</RefreshView>
 
 </ContentPage>
