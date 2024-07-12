@@ -1,64 +1,49 @@
-using AllSmart.Services;
-using Microsoft.AspNetCore.Components;
-using AllSmart.Models;
+using System.ComponentModel;
 
 namespace AllSmart.Pages;
 
 public partial class Index : ContentPageBase
 {
-   
+    
+    private bool _serverStateOn;
+    private bool _pumpOff;
 
-    private int SensorData { get; set; }
-
-    private bool SensorState { get; set; }
-
-    private bool PumpOff { get; set; } = true;
-
-    private bool AlarmOn { get; set; }
     protected override async void OnParametersSet()
     {
         IsBusy = true;
-        try
+        
+        _serverStateOn = Convert.ToBoolean(await ViewModel.GetDeviceState());
+
+        if (!_serverStateOn)
         {
-           
-            var sensorState = await GetSensorState();
 
-            if (sensorState.HasValue)
-            {
-                SensorState = sensorState.Value;
-            }
-
-
-            if (!SensorState)
-            {
-                SensorData = await GetSensorData();
-            }else
-            {
-                SensorData = 1;
-            }
         }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            IsBusy = false;
-            throw;
-        }
-
+        
         IsBusy = false;
-
+        
+        ViewModel.PropertyChanged += ViewModel_PropertyChanged;
+        
         StateHasChanged();
         await base.OnParametersSetAsync();
     }
 
+    private void ViewModel_PropertyChanged(object sender, PropertyChangedEventArgs e)
+    {
+        StateHasChanged();
+    }
 
+    public void ReloadPage()
+    {
+        OnParametersSet();
+    }
+    
     private async void OnPumpChange()
     {
         var response = await WebServiceApi.ChangePumpState();
         if(response.HasValue)
         {
-            PumpOff = Convert.ToBoolean(response.Value);
+            _pumpOff = Convert.ToBoolean(response.Value);
             StateHasChanged();
         }
     }
-
 }

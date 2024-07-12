@@ -1,26 +1,54 @@
-using System.Windows.Input;
 using AllSmart.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Microsoft.AspNetCore.Components;
 
 namespace AllSmart.ViewModels;
 
-public partial class MainPageViewModel : ObservableObject
+public partial class MainPageViewModel : BaseViewModel
 {
+    private readonly IWebServiceApi _webServiceApi;
 
-    public ICommand RefreshCommand { get; }
-
-    [ObservableProperty] private int sensorData;
-
-    [Inject] private IWebServiceApi WebServiceApi { get; set; }
-    public MainPageViewModel()
+    [ObservableProperty] private int _sensorData;
+    [ObservableProperty] private bool _serviceStateOn;
+    
+    [RelayCommand]
+    async void Refresh()
     {
-        RefreshCommand = new RelayCommand(RefreshPage);
+        IsRefreshing = false;
+        await GetDeviceState();
     }
-
-    private static void RefreshPage()
+    
+    public MainPageViewModel(IWebServiceApi webServiceApi)
     {
-        throw new NotImplementedException();
+        _webServiceApi = webServiceApi;
+    }
+    
+    public async Task<bool?>GetDeviceState()
+    {
+        IsBusy = true;
+
+        try
+        {
+            var response = await _webServiceApi.GetSysInfo();
+            
+            IsBusy = false;
+            
+            return ServiceStateOn = response is not null;
+        }
+        catch (Exception e)
+        {
+            IsBusy = false;
+            
+            await Application.Current.MainPage.DisplayAlert(
+                "Device not found!",
+                "Check if the device is connected.",
+                "Ok");
+            
+            return ServiceStateOn = false;
+        }
+        finally
+        {
+            IsBusy = false;
+        } 
     }
 }

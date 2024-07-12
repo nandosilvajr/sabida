@@ -1,3 +1,4 @@
+#nullable enable
 using Refit;
 using AllSmart.Models;
 
@@ -5,6 +6,12 @@ namespace AllSmart.Services;
 
 public interface IWebServiceApi
 {
+    [Get("/$sysInfo")]
+    Task<SysInfo?> GetSysInfo();
+    
+    [Get("/pumpStatusInfo")]
+    Task<int?> GetPumpStatus();
+    
     [Get("/$readSensor")]
     Task<int?> GetSensorData();
 

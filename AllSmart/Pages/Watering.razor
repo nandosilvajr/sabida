@@ -1,5 +1,6 @@
 ﻿@page "/watering"
 @using AllSmart.Models
+@using AllSmart.Services
 @using MudBlazor
 @using Newtonsoft.Json
 @inherits ContentPageBase
@@ -21,7 +22,7 @@
     </div>
 }
 
-<div class="d-flex flex-wrap justify-content-center mt-3">
+<div class="d-flex flex-wrap justify-content-center mt-5">
     <ButtonList Disable=IsBusy DataSource="WeekDays" Title="Watering Days" DataSourceBack="OnDataSourceUpdate"></ButtonList>
 </div>
 
@@ -37,7 +38,6 @@
         Value="@WateringTime"
         ValueLabel="true"
         ValueChanged="OnWateringTimeValueChanged">
-
     </MudSlider>
 </div>
 
@@ -47,61 +47,54 @@
 </div>
 
 <div class="d-flex flex-wrap justify-content-center mt-5">
-<ToogleButtonIcon
-    Disable=IsBusy
-    Value=@PumpOn
-    Icon="@Icons.Material.Outlined.WaterDrop"
-    ToogledIcon="@Icons.Material.Outlined.WaterDrop"
-    Title="Water"
-    ToogledTitle="Watering"
-    Clicked="OnWateringClicked">
-</ToogleButtonIcon>
+    <ToogleButtonIcon
+        Disable=IsBusy
+        Value=@PumpOn
+        Icon="@Icons.Material.Outlined.WaterDrop"
+        ToogledIcon="@Icons.Material.Outlined.WaterDrop"
+        Title="Water"
+        ToogledTitle="Watering"
+        Clicked="OnWateringClicked">
+    </ToogleButtonIcon>
 </div>
 
 
 @code {
+
+    [Inject] IWebServiceApi WebServiceApi { get; set; }
+    
+    private int MoistureSensorData { get; set; }
+
+    private int WaterLevelSensorData { get; set; }
+
+    private List<WeekDay> WeekDays { get; set; } = new();
+
+    private List<DateTime> LastWatering { get; set; } = new();
+
+    private bool PumpOn { get; set; }
+
+    private int WateringTime { get; set; }
+
+    private DateTime LastWateringDateTime => LastWatering.LastOrDefault();
+
     [Parameter]
     public bool MoistureSensorOff { get; set; } = true;
 
     [Parameter]
     public bool WaterLevelSensorOff { get; set; } = true;
-
-    private int MoistureSensorData { get; set; }
-
-    private int WaterLevelSensorData { get; set; }
-
-    List<WeekDay> WeekDays { get; set; } = new();
-
-    List<DateTime> LastWatering { get; set; } = new();
-
-    public bool PumpOn { get; set; }
-
-    public int WateringTime { get; set; }
-
-    private DateTime LastWateringDateTime => LastWatering.LastOrDefault();
-
-    protected override async Task OnInitializedAsync()
+    
+    protected override Task OnInitializedAsync()
     {
         IsBusy = true;
         LoadData();
         IsBusy = false;
+        return Task.CompletedTask;
     }
 
     private async void LoadData()
     {
         try
         {
-            var moistureSensorState = await GetSensorState();
-
-            if (moistureSensorState.HasValue)
-            {
-                MoistureSensorOff = moistureSensorState.Value;
-            }
-
-            if (!MoistureSensorOff)
-            {
-                MoistureSensorData = await GetSensorData();
-            }
 
             WeekDays.Clear();
 
@@ -148,7 +141,7 @@
             IsBusy = false;
             StateHasChanged();
         }
-        catch (Exception e)
+        catch (Exception)
         {
             IsBusy = false;
             StateHasChanged();
@@ -164,7 +157,9 @@
         try
         {
             var response = await WebServiceApi.ChangePumpState();
-            PumpOn = response.Value == 0;
+            if(response.HasValue)
+                PumpOn = response.Value == 1;
+            
             LoadData();
             IsBusy = false;
             StateHasChanged();
@@ -187,7 +182,7 @@
             var response = await WebServiceApi.WateringTime(WateringTime.ToString());
             IsBusy = false;
         }
-        catch (Exception e)
+        catch (Exception)
         {
             IsBusy = false;
             Snackbar.Add("Error to try send Watering time update.", Severity.Error);

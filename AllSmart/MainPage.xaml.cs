@@ -1,12 +1,13 @@
-﻿using AllSmart.ViewModels;
+﻿using AllSmart.Services;
+using AllSmart.ViewModels;
 
 namespace AllSmart;
 
 public partial class MainPage : ContentPage
 {
-    public MainPage()
+    public MainPage(MainPageViewModel vm)
     {
-        BindingContext = new MainPageViewModel();
         InitializeComponent();
+        BindingContext = vm;
     }
 }

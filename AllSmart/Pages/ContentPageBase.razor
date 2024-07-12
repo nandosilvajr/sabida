@@ -3,47 +3,28 @@
 @using MudBlazor
 
 @code {
+    
     [Inject] 
-    public IWebServiceApi WebServiceApi { get; set; }
+    private IDialogService DialogService { get; set; }
+    
+    public bool IsBusy { get; set; }
 
     [Inject]
     public ISnackbar Snackbar { get; set; }
+    
+    [Inject] 
+    public IWebServiceApi WebServiceApi { get; set; }
 
-    public bool IsBusy { get; set; }
-
-    public async Task<int> GetSensorData()
+    protected async Task<int> GetSensorData()
     {
         IsBusy = true;
+        
         var response = await WebServiceApi.GetSensorData();
 
         IsBusy = false;
+        
         return ConvertSensorData(response ?? 0);
     }
-
-    public async Task<bool?>GetSensorState()
-    {
-        IsBusy = true;
-        bool? sensorState = null;
-        try
-        {
-
-            var response = await WebServiceApi.GetSensorState();
-            sensorState = response.Equals("0") ? false : true;
-
-
-            IsBusy = false;
-
-
-        }
-        catch (Exception e)
-        {
-            IsBusy = false;
-            throw;
-        }
-
-        return sensorState;
-    }
-
 
     private int ConvertSensorData(int data)
     {
@@ -57,23 +38,26 @@
         return 1;
     }
 
-    public async Task<int> GetWatetingTimeData()
+    protected async Task<int> GetWatetingTimeData()
     {
         IsBusy = true;
+        
         var response = await WebServiceApi.GetWateringTime();
+        
         if(string.IsNullOrEmpty(response))
         {
             return 0;
-        }else
-        {
-            IsBusy = false;
-            return Convert.ToInt32(response);
         }
+        
+        IsBusy = false;
+        
+        return Convert.ToInt32(response);
     }
 
-    public async Task<List<DateTime>> GetLastWatering()
+    protected async Task<List<DateTime>> GetLastWatering()
     {
         IsBusy = true;
+        
         var response = await WebServiceApi.GetLastWatering();
 
         if (!string.IsNullOrEmpty(response))
@@ -90,19 +74,20 @@
                     newWeekDayList.Add(DateTime.Parse(item));
                 }
             }
+            
             IsBusy = false;
+            
             return newWeekDayList;
-        } else
-        {
-            Snackbar.Add("Error try watering data from device.");
-            IsBusy = false;
-            return null;
         }
+
+        Snackbar.Add("Error to try get data of watering device.");
+        
         IsBusy = false;
+        
         return null;
     }
 
-    public async Task<List<WeekDay>> GetSelectedWeekDays()
+    protected async Task<List<WeekDay>> GetSelectedWeekDays()
     {
         IsBusy = true;
 
@@ -127,10 +112,14 @@
                     }); 
                 }
             }
+            
             IsBusy = false;
+            
             return newWeekDayList;
         }
+        
         IsBusy = false;
+        
         return null;
     }
 }

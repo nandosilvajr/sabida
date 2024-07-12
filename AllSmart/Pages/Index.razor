@@ -1,20 +1,24 @@
 ﻿@page "/"
 @using AllSmart.Models;
+@using AllSmart.ViewModels
 @using MudBlazor
 @inherits ContentPageBase
+@inject MainPageViewModel ViewModel
 
-<Spinner Color="0043A8" IsLoading=IsBusy></Spinner>
+<Spinner Color="0043A8" IsLoading=ViewModel.IsBusy></Spinner>
 <div>
     <img src="../images/logotipo.svg" style="height: 4rem; padding: 0 ; position: relative; top: 1rem; margin-bottom: 1rem" alt=""/>
 </div>
 
 <MudText Class="px-3 my-5 pb-3" Style="color: #0043A8; font-size:large; font-family: 'Lexend-Regular', Helvetica, Arial, sans-serif !important;">Devices</MudText>
+
 <DevicesCard Title="Watering"
              IconLeft="@Icons.Material.Outlined.LocalFlorist"
              IconRight="@Icons.Material.Filled.Brightness1"
              Size="Size.Large"
              Color="0043A8"
              DeviceMeasure="@DeviceMeter.OnOff"
-             DeviceData="SensorData"
+             DeviceData="@(ViewModel.ServiceStateOn ? 1 : 0)"
+             IsDisabled="@(!ViewModel.ServiceStateOn)"
              OnClickNavigation="/watering"></DevicesCard>
 
