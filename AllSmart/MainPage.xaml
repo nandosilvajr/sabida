@@ -3,16 +3,23 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:AllSmart"
+             xmlns:viewModels="clr-namespace:AllSmart.ViewModels"
              x:Class="AllSmart.MainPage"
+             x:DataType="viewModels:MainPageViewModel"
+             Shell.NavBarIsVisible="False"
              BackgroundColor="{DynamicResource PageBackgroundColor}">
-
-<RefreshView IsRefreshing="{Binding IsRefreshing}"
-             Command="{Binding RefreshCommand}">
-        <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
-            <BlazorWebView.RootComponents>
-                <RootComponent Selector="#app" ComponentType="{x:Type local:Main}" />
-            </BlazorWebView.RootComponents>
+<RefreshView 
+    HorizontalOptions="Fill" 
+    VerticalOptions="Fill" 
+    Command="{Binding RefreshCommand}"
+    IsRefreshing="{Binding IsRefreshing}"
+    >
+    <Grid VerticalOptions="Fill">
+        <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html" VerticalOptions="Fill">
+                <BlazorWebView.RootComponents>
+                    <RootComponent Selector="#app" ComponentType="{x:Type local:Main}" />
+                </BlazorWebView.RootComponents>
         </BlazorWebView>
+    </Grid>
 </RefreshView>
-
 </ContentPage>

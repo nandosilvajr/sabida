@@ -1,9 +1,11 @@
 ﻿@page "/"
 @using AllSmart.Models;
+@using AllSmart.ViewModels
 @using MudBlazor
 @inherits ContentPageBase
+@inject MainPageViewModel ViewModel
 
-<Spinner Color="0043A8" IsLoading=IsBusy></Spinner>
+<Spinner Color="0043A8" IsLoading=ViewModel.IsBusy></Spinner>
 <div>
     <img src="../images/logotipo.svg" style="height: 4rem; padding: 0 ; position: relative; top: 1rem; margin-bottom: 1rem" alt=""/>
 </div>
@@ -16,7 +18,7 @@
              Size="Size.Large"
              Color="0043A8"
              DeviceMeasure="@DeviceMeter.OnOff"
-             DeviceData="@(_serverState ? 1 : 0)"
-             IsDisabled="@(!_serverState)"
+             DeviceData="@(ViewModel.ServiceStateOn ? 1 : 0)"
+             IsDisabled="@(!ViewModel.ServiceStateOn)"
              OnClickNavigation="/watering"></DevicesCard>
 

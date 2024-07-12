@@ -1,4 +1,5 @@
 ﻿using AllSmart.Services;
+using AllSmart.ViewModels;
 using Microsoft.Extensions.Logging;
 using MudBlazor.Services;
 using Refit;
@@ -26,6 +27,8 @@ public static class MauiProgram
             );
 
         builder.Services.AddMudServices();
+        builder.Services.AddSingleton<MainPageViewModel>();
+        builder.Services.AddTransient<MainPage>();
 
 #if DEBUG
         builder.Services.AddBlazorWebViewDeveloperTools();

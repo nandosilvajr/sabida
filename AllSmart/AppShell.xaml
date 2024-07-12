@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<Shell xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:allSmart="clr-namespace:AllSmart"
+             x:Class="AllSmart.AppShell">
+    <ShellItem>
+        <ShellSection>
+            <ShellContent ContentTemplate="{DataTemplate allSmart:MainPage}" />
+        </ShellSection>
+    </ShellItem>
+</Shell>
