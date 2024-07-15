@@ -92,7 +92,7 @@ https://github.com/user-attachments/assets/a3213901-3eeb-4557-a3a6-c0a1003e0a87
 
 ### Connect with Me
 
-- **LinkedIn**: [Fernando Silva Jr.](https://www.linkedin.com/in/nandosilvajr/)
+- **LinkedIn**: [Fernando Silva Jr.](https://www.linkedin.com/in/fernandojsj/)
 - **GitHub**: [nandosilvajr](https://github.com/nandosilvajr)
 
 
